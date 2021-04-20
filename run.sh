@@ -1,0 +1,1 @@
+docker run -u root -d --rm --name lithops-jupyterlab -p 8080:8888 -v jupyterlab:/home/jovyan/work --env-file=config.env aitorarjona/lithops-jupyterlab:2.3.1 jupyter-lab --no-browser --autoreload --allow-root

@@ -3,6 +3,8 @@ from s3contents import S3ContentsManager
 
 c = get_config()
 
+# c.Application.log_level = 'DEBUG'
+
 
 c.ServerApp.password = os.environ['JUPYTERLAB_PASSWORD']
 

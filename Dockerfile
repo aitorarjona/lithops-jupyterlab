@@ -1,6 +1,9 @@
 FROM jupyter/scipy-notebook
 
-RUN pip install s3contents jupyterlab-s3-browser
+RUN pip install --no-cache-dir -U \
+        git+https://github.com/aitorarjona/s3contents \
+        jupyterlab_s3_browser \
+        lithops
 
 RUN jupyter serverextension enable --py jupyterlab_s3_browser
 

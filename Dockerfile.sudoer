@@ -1,0 +1,15 @@
+FROM jupyter/scipy-notebook
+
+USER root
+
+RUN echo "jovyan:lithops" | chpasswd && adduser jovyan sudo && \
+    usermod -a -G sudo jovyan && \
+    echo 'jovyan  ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+RUN pip install --no-cache-dir -U \
+        git+https://github.com/cloudbutton/s3contents \
+        jupyterlab_s3_browser
+
+RUN jupyter serverextension enable --py jupyterlab_s3_browser
+
+ADD jupyter_notebook_config.py .jupyter/jupyter_notebook_config.py

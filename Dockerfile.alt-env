@@ -1,0 +1,31 @@
+FROM jupyter/scipy-notebook:latest
+
+ARG conda_env=Python3.7
+ARG py_ver=3.7
+
+RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env python=$py_ver ipython ipykernel && \
+    # --- python3.7 conda packages ---
+    conda clean --all -f -y
+
+RUN $CONDA_DIR/envs/${conda_env}/bin/python -m ipykernel install --user --name=${conda_env} && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+RUN $CONDA_DIR/envs/${conda_env}/bin/pip install --no-cache-dir -U \
+    pip setuptools wheel six \
+    # --- python3.7 pip packages ---
+    lithops
+
+RUN pip install --quiet --no-cache-dir -U \
+    pip setuptools wheel six \
+    git+https://github.com/aitorarjona/s3contents \
+    jupyterlab_s3_browser \
+    lithops
+
+RUN jupyter serverextension enable --py jupyterlab_s3_browser
+
+ADD jupyter_notebook_config.py .jupyter/jupyter_notebook_config.py
+
+ENV PATH $CONDA_DIR/envs/${conda_env}/bin:$PATH
+
+ENV CONDA_DEFAULT_ENV ${conda_env}

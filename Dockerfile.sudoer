@@ -1,6 +1,5 @@
 FROM jupyter/scipy-notebook
 
-USER root
 
 RUN echo "jovyan:lithops" | chpasswd && adduser jovyan sudo && \
     usermod -a -G sudo jovyan && \

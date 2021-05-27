@@ -3,6 +3,15 @@ FROM jupyter/scipy-notebook:latest
 ARG conda_env=Python3.7
 ARG py_ver=3.7
 
+# USER root
+
+# RUN apt-get update --yes && \
+#     apt-get install --yes --no-install-recommends \
+#     # ---- nbconvert dependencies ----
+#     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# USER $NB_UID
+
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/$conda_env python=$py_ver ipython ipykernel && \
     # --- python3.7 conda packages ---
     conda clean --all -f -y
